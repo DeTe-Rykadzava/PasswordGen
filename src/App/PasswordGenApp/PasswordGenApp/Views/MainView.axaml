@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:PasswordGenApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PasswordGenApp.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+        <Style Selector="Border.LoadSpin">
+            <Style.Animations>
+                <Animation Duration="0:0:1" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="RotateTransform.Angle" Value="0.0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="RotateTransform.Angle" Value="360.0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+    
+    <Grid Name="ContentGrid">
+        <Panel IsVisible="{Binding NavigationService, Converter={x:Static ObjectConverters.IsNull}}"
+               Name="LoadPanel"
+               Background="Black" 
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"
+               ZIndex="1">
+            <StackPanel Orientation="Horizontal" Spacing="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding Status}"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="350"
+                           TextAlignment="Center"/>
+                <Border Classes="LoadSpin" 
+                        BorderThickness="3"
+                        CornerRadius="10"
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Center">
+                    <Border.BorderBrush>
+                        <LinearGradientBrush >
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="White"></GradientStop>
+                                <GradientStop Offset="1" Color="Transparent"></GradientStop>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Border.BorderBrush>
+                </Border>
+            </StackPanel>
+        </Panel>
+        <ContentControl Content="{Binding NavigationService.CurrentViewModel}" IsVisible="{Binding NavigationService, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+    </Grid>
+</UserControl>
